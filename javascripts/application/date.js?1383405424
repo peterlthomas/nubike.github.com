@@ -1,0 +1,98 @@
+
+var DateReplacer = Class.create();
+
+DateReplacer.prototype = {
+    initialize: function() {
+        this.months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+        ]
+    },
+	
+    go: function() {
+
+        var midnight = this.getMidnight();
+        var lastLogin = this.readCookie('last_login');
+        if (lastLogin!=null) {
+            lastLogin = new Date(lastLogin*1000);
+        }
+
+        $$('.replaceable_date').each( function(elem) {
+            var date = new Date(Date.parse(elem.collectTextNodes()));
+            var offset = this.getDayOffset(date, midnight);
+            if (offset<=1) {
+                elem.update(this.forumDate(date, offset));
+            }
+            if (this.isNewPost(date, lastLogin)) {
+                elem.insert('<img class="new-image" src="/images/furniture/nubike2005/misc/new.png" alt="new" />');
+            }
+        }.bind(this));
+    },
+	
+    isNewPost: function(date, lastLogin) {
+        if (lastLogin==null) {
+            return false;
+        } else {
+            return date.getTime() > lastLogin.getTime();
+        }
+    },
+	
+    getMidnight: function() {
+        var midnight = new Date();
+        midnight.setMinutes(0);
+        midnight.setHours(0);
+        midnight.setSeconds(0);
+        return midnight;
+    },
+	
+    getDayOffset: function(time, midnight) {
+        if (time.getTime() >= midnight.getTime()) {
+            return 0;
+        } else {
+            return Math.ceil((midnight.getTime() - time.getTime())/86400000);
+        }
+    },
+	
+    readCookie: function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    },
+	
+    forumDate: function(date, offset) {
+        if (offset==0) {
+            return '<b>Today</b> at ' + this.twoDigits(date.getHours()) + ':' + this.twoDigits(date.getMinutes());
+        } else if (offset==1) {
+            return '<b>Yesterday</b> at ' + this.twoDigits(date.getHours()) + ':' + this.twoDigits(date.getMinutes());
+        } else {
+            return this.twoDigits(date.getDate()) + ' ' + months[date.getMonth()] + ', ' + date.getFullYear() + ' ' + this.twoDigits(date.getHours()) + ':' + this.twoDigits(date.getMinutes());
+        }
+    },
+
+    twoDigits: function(digits) {
+        if (digits<10) {
+            digits = '0' + digits;
+        }
+        return digits;
+    }
+}
+
+document.observe("dom:loaded", function() { 
+    var replacer = new DateReplacer();
+    replacer.go();
+});

@@ -1,0 +1,30 @@
+div.forum-post-titles, div.forum-thread-titles {
+	float: left;
+}
+
+div.forum-post-edit-controls, div.forum-thread-edit-controls {
+	float: right;
+	padding-left: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+div.forum-post-body, div.forum-thread-body {
+	clear: left;
+}
+
+div.forum-thread-footer {
+	clear: both;
+	padding-bottom: 1em;;
+}
+
+div.forum-thread {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #eee;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+span.forum-thread-date {
+    color: #666;
+}

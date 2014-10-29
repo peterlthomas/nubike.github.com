@@ -1,0 +1,12 @@
+a {
+    color: #D66100;
+}
+
+ul.nav-tabs, div#banner {
+    background: #333;
+    color: white;
+}
+
+ul.nav-tabs li a {
+    color :white;
+}
