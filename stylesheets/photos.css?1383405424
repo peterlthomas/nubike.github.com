@@ -1,4 +1,0 @@
-div.thumbnail form input,
-div.thumbnail form {
-    margin: 0px;
-}
